@@ -3,10 +3,10 @@
 // Database Configuration
 // ============================================================
 
-define('DB_HOST',    getenv('DB_HOST')    ?: 'localhost');
+define('DB_HOST',    getenv('DB_HOST')    ?: '127.0.0.1');
 define('DB_USER',    getenv('DB_USER')    ?: 'root');
 define('DB_PASS',    getenv('DB_PASS')    ?: '');
-define('DB_NAME',    getenv('DB_NAME')    ?: 'pharmacy_db');
+define('DB_NAME',    getenv('DB_NAME')    ?: 'Pharmacy_DB');
 define('DB_CHARSET', 'utf8mb4');
 
 define('APP_NAME',    'PharmaCare IMS');
@@ -19,7 +19,7 @@ class Database {
     public static function connect(): PDO {
         if (self::$instance === null) {
             $dsn = sprintf(
-                'mysql:host=%s;dbname=%s;charset=%s',
+                'mysql:host=127.0.0.1;dbname=Pharmacy_DB;charset=utf8mb4',
                 DB_HOST, DB_NAME, DB_CHARSET
             );
             $options = [
