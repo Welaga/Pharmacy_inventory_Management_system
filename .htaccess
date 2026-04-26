@@ -1,0 +1,49 @@
+Options -Indexes
+ServerSignature Off
+
+# ── Security Headers ──────────────────────────────────────
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ── Block direct access to sensitive file types ───────────
+# NOTE: DirectoryMatch is NOT valid in .htaccess — FilesMatch is used instead
+<FilesMatch "\.(sql|md|log|sh|env|ini|bak)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ── Cache static assets ───────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css               "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png              "access plus 1 month"
+    ExpiresByType image/jpeg             "access plus 1 month"
+    ExpiresByType image/gif              "access plus 1 month"
+    ExpiresByType image/svg+xml          "access plus 1 month"
+</IfModule>
+
+# ── PHP settings ─────────────────────────────────────────
+# PHP 8.x on XAMPP (mod_php8), PHP 7.x (mod_php7)
+<IfModule mod_php8.c>
+    php_flag display_errors  Off
+    php_flag log_errors      On
+    php_value session.cookie_httponly 1
+    php_value session.use_strict_mode 1
+</IfModule>
+
+<IfModule mod_php7.c>
+    php_flag display_errors  Off
+    php_flag log_errors      On
+    php_value session.cookie_httponly 1
+    php_value session.use_strict_mode 1
+</IfModule>
